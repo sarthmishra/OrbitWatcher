@@ -6,9 +6,15 @@ import logging
 import os
 from config import LOG_FILE, LOG_LEVEL
 
+# Create the logs directory if it doesn't exist yet
 os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
 
+
 def get_logger(name: str) -> logging.Logger:
+    """
+    Returns a named logger that writes to both the terminal
+    and the log file simultaneously.
+    """
     logger = logging.getLogger(name)
 
     if logger.handlers:

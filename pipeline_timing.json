@@ -1,0 +1,12 @@
+{
+  "n_fetched": 10303,
+  "n_propagated": 10303,
+  "n_conjunctions": 325,
+  "tle_network_ms": 9933.8,
+  "tle_store_ms": 159.6,
+  "sgp4_propagation_ms": 208.2,
+  "screening_ms": 87.7,
+  "maneuver_ms": 17.1,
+  "total_excl_network_ms": 472.6,
+  "total_incl_network_ms": 10406.4
+}

@@ -1,6 +1,4 @@
 # backend/database.py
-# Creates the SQLite database, enables WAL mode,
-# and sets up all three tables on first run.
 
 import sqlite3
 import os
@@ -13,22 +11,34 @@ from logger import get_logger
 
 log = get_logger(__name__)
 
+
 def get_connection():
+    """
+    Opens a new SQLite connection for each request.
+    Database is stored outside OneDrive to avoid 2-second sync overhead.
+    WAL mode and memory settings are applied per connection.
+    """
     os.makedirs(os.path.dirname(DATABASE_PATH), exist_ok=True)
     conn = sqlite3.connect(DATABASE_PATH)
     conn.row_factory = sqlite3.Row
+
+    # Performance settings
+    conn.execute("PRAGMA journal_mode=WAL")
+    conn.execute("PRAGMA cache_size=-32000")   # 32 MB page cache
+    conn.execute("PRAGMA temp_store=MEMORY")
+    conn.execute("PRAGMA synchronous=NORMAL")
+
     return conn
+
 
 def init_db():
     log.info("Initialising database...")
     conn = get_connection()
     cursor = conn.cursor()
 
-    # Enable WAL mode — prevents read/write conflicts
     cursor.execute("PRAGMA journal_mode=WAL")
 
     # Table 1: satellites
-    # Stores the latest TLE for each Starlink satellite
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS satellites (
             id           INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -40,7 +50,6 @@ def init_db():
     """)
 
     # Table 2: conjunctions
-    # Stores pre-computed collision risk pairs
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS conjunctions (
             id                     INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -56,7 +65,6 @@ def init_db():
     """)
 
     # Table 3: maneuvers
-    # Stores delta-V suggestions linked to a conjunction
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS maneuvers (
             id                  INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -67,9 +75,28 @@ def init_db():
         )
     """)
 
+    # Indexes for fast API queries
+    cursor.execute("""
+        CREATE INDEX IF NOT EXISTS idx_conjunctions_risk
+        ON conjunctions(risk_score DESC)
+    """)
+    cursor.execute("""
+        CREATE INDEX IF NOT EXISTS idx_conjunctions_sat1
+        ON conjunctions(sat1_id)
+    """)
+    cursor.execute("""
+        CREATE INDEX IF NOT EXISTS idx_conjunctions_sat2
+        ON conjunctions(sat2_id)
+    """)
+    cursor.execute("""
+        CREATE INDEX IF NOT EXISTS idx_satellites_name
+        ON satellites(name)
+    """)
+    cursor.execute("""
+        CREATE INDEX IF NOT EXISTS idx_maneuvers_conjunction
+        ON maneuvers(conjunction_id)
+    """)
+
     conn.commit()
     conn.close()
-    log.info("Database ready — 3 tables confirmed.")
-
-if __name__ == "__main__":
-    init_db()
+    log.info("Database ready — 3 tables, 5 indexes confirmed.")

@@ -1,12 +1,8 @@
 # config.py
-# Every constant used anywhere in the system lives here.
-# Nothing is hardcoded in any other file.
+
+import os
 
 # ── Data source ────────────────────────────────────────────
-CELESTRAK_STARLINK_URL = (
-    "https://celestrak.org/SOCRATES/query.php"
-)
-
 CELESTRAK_STARLINK_TLE_URL = (
     "https://celestrak.org/NORAD/elements/gp.php?GROUP=starlink&FORMAT=tle"
 )
@@ -25,11 +21,13 @@ MAX_RELATIVE_VELOCITY_KM_S = 15.0
 RISK_ALERT_THRESHOLD = 0.05
 
 # ── Database ───────────────────────────────────────────────
-DATABASE_PATH = "data/orbitwatch.db"
+# Stored on local C: drive outside OneDrive.
+# OneDrive adds ~2 seconds per file-open due to cloud sync.
+DATABASE_PATH = "C:/OrbitWatchData/orbitwatch.db"
 
 # ── API ────────────────────────────────────────────────────
 API_PREFIX = "/api/v1"
 
 # ── Logging ────────────────────────────────────────────────
-LOG_FILE = "logs/orbitwatch.log"
+LOG_FILE = "C:/OrbitWatchData/orbitwatch.log"
 LOG_LEVEL = "INFO"

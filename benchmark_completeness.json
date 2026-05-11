@@ -1,0 +1,30 @@
+[
+  {
+    "threshold_km": 50,
+    "bf_pairs": 317,
+    "kd_pairs": 317,
+    "completeness": 100.0,
+    "false_negatives": 0
+  },
+  {
+    "threshold_km": 30,
+    "bf_pairs": 97,
+    "kd_pairs": 97,
+    "completeness": 100.0,
+    "false_negatives": 0
+  },
+  {
+    "threshold_km": 20,
+    "bf_pairs": 42,
+    "kd_pairs": 42,
+    "completeness": 100.0,
+    "false_negatives": 0
+  },
+  {
+    "threshold_km": 10,
+    "bf_pairs": 7,
+    "kd_pairs": 7,
+    "completeness": 100.0,
+    "false_negatives": 0
+  }
+]
