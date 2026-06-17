@@ -191,7 +191,7 @@ Each term is physically grounded:
 ---
 
 ## Project Structure
-
+```text
 OrbitWatcher/
 ├── config.py                    ← ALL constants (thresholds, paths, URLs)
 ├── logger.py                    ← Centralized logging (writes to C:/OrbitWatchData/)
@@ -241,7 +241,7 @@ OrbitWatcher/
 ├── fig2_speedup.pdf/.png
 ├── fig3_completeness.pdf/.png
 └── fig4_pipeline_breakdown.pdf/.png
-
+```
 ---
 
 ## Built With
