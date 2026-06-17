@@ -79,7 +79,7 @@ Browser (single HTML page, no build toolchain)
         │
         ├── satellite.js 4.1.3   → SGP4 propagation in browser @ 60 FPS
         ├── Three.js r128        → 3D globe, BufferGeometry (1 GPU draw call)
-        └── Chart.js 4.4.0       → Analytics charts
+        └── Chart.js 4.4.0       → Analytics charts/
 ---
 
 ## Database Schema
