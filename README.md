@@ -34,6 +34,9 @@ Run locally — see setup below.
 
 ## Architecture
 
+## Architecture
+
+```text
 CelesTrak GP Endpoint (internet)
         │
         │ HTTP GET (every 6 hours via APScheduler)
@@ -69,7 +72,7 @@ SQLite: maneuvers table
         ▼ (read-only, no computation per request)
 FastAPI REST API — 4 endpoints
         │
-        ├── GET /api/v1/tles          → all 10,303 TLE records (for browser)
+        ├── GET /api/v1/tles          → all 10,303 TLE records
         ├── GET /api/v1/conjunctions  → top-N pairs sorted by risk DESC
         ├── GET /api/v1/analytics     → summary statistics
         └── GET /api/v1/maneuvers     → delta-V recommendations
@@ -79,8 +82,8 @@ Browser (single HTML page, no build toolchain)
         │
         ├── satellite.js 4.1.3   → SGP4 propagation in browser @ 60 FPS
         ├── Three.js r128        → 3D globe, BufferGeometry (1 GPU draw call)
-        └── Chart.js 4.4.0       → Analytics charts/
----
+        └── Chart.js 4.4.0       → Analytics charts
+```
 
 ## Database Schema
 
