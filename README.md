@@ -112,13 +112,14 @@ TABLE: maneuvers
   conjunction_id      INTEGER FK → conjunctions.id
   delta_v_m_s         REAL
   recommendation_text TEXT
-
+```text
 INDEXES (5 total):
   idx_conjunctions_risk      ON conjunctions(risk_score DESC)
   idx_conjunctions_sat1      ON conjunctions(sat1_id)
   idx_conjunctions_sat2      ON conjunctions(sat2_id)
   idx_satellites_name        ON satellites(name)
   idx_maneuvers_conjunction  ON maneuvers(conjunction_id)
+```
 ---
 
 ## Tech Stack
