@@ -14,6 +14,12 @@ Run locally — see setup below.
 
 ---
 
+## Screenshots
+
+> _Add screenshots here once the app is running locally._
+
+---
+
 ## Features
 
 - **3D Globe** — 10,000+ real Starlink satellites rendered at 60 FPS
@@ -31,8 +37,6 @@ Run locally — see setup below.
 - **Export** — download conjunction reports as CSV or JSON
 
 ---
-
-## Architecture
 
 ## Architecture
 
@@ -87,9 +91,11 @@ Browser (single HTML page, no build toolchain)
 
 ## Database Schema
 
-SQLite location: C:/OrbitWatchData/orbitwatch.db
-Log file:        C:/OrbitWatchData/orbitwatch.log
-Mode:            WAL (Write-Ahead Logging — allows concurrent reads during writes)
+SQLite location (macOS/Linux): `~/OrbitWatchData/orbitwatch.db`
+SQLite location (Windows):     `C:/OrbitWatchData/orbitwatch.db`
+Log file (macOS/Linux):        `~/OrbitWatchData/orbitwatch.log`
+Log file (Windows):            `C:/OrbitWatchData/orbitwatch.log`
+Mode: WAL (Write-Ahead Logging — allows concurrent reads during writes)
 
 TABLE: satellites
   id            INTEGER PRIMARY KEY AUTOINCREMENT
@@ -112,29 +118,29 @@ TABLE: maneuvers
   conjunction_id      INTEGER FK → conjunctions.id
   delta_v_m_s         REAL
   recommendation_text TEXT
-```text
+
 INDEXES (5 total):
   idx_conjunctions_risk      ON conjunctions(risk_score DESC)
   idx_conjunctions_sat1      ON conjunctions(sat1_id)
   idx_conjunctions_sat2      ON conjunctions(sat2_id)
   idx_satellites_name        ON satellites(name)
   idx_maneuvers_conjunction  ON maneuvers(conjunction_id)
-```
+
 ---
 
 ## Tech Stack
 
-| Layer      | Technology                        |
-|------------|-----------------------------------|
-| Backend    | Python 3.12, FastAPI, Uvicorn     |
-| Orbital math | python-sgp4, numpy, scipy       |
-| Database   | SQLite (WAL mode)                 |
-| Scheduler  | APScheduler (6-hour refresh)      |
-| 3D Globe   | Three.js r128                     |
-| Propagation | satellite.js (browser SGP4)      |
-| Charts     | Chart.js 4                        |
-| Fonts      | Inter, Space Mono (Google Fonts)  |
-| Data source | CelesTrak (free, no account)     |
+| Layer        | Technology                    |
+|--------------|-------------------------------|
+| Backend      | Python 3.12, FastAPI, Uvicorn |
+| Orbital math | python-sgp4, numpy, scipy     |
+| Database     | SQLite (WAL mode)             |
+| Scheduler    | APScheduler (6-hour refresh)  |
+| 3D Globe     | Three.js r128                 |
+| Propagation  | satellite.js (browser SGP4)   |
+| Charts       | Chart.js 4                    |
+| Fonts        | Inter, Space Mono (Google Fonts) |
+| Data source  | CelesTrak (free, no account)  |
 
 ---
 
@@ -147,7 +153,7 @@ INDEXES (5 total):
 ### Installation
 
 ```bash
-git clone https://github.com/ssr0231/OrbitWatcher.git
+git clone https://github.com/sarthmishra/OrbitWatcher.git
 cd OrbitWatcher
 pip install -r requirements.txt
 python -m uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
@@ -180,9 +186,10 @@ Interactive API docs at `/docs`.
 ---
 
 ## Risk Formula
+
 risk_score = (1 / (distance_km + 1))
-× (relative_velocity_km_s / 15)
-× (1 / (time_to_closest_approach_s + 1))
+           × (relative_velocity_km_s / 15)
+           × (1 / (time_to_closest_approach_s + 1))
 
 Each term is physically grounded:
 - **Distance** — closer approach = higher risk
@@ -192,57 +199,43 @@ Each term is physically grounded:
 ---
 
 ## Project Structure
-```text
+
 OrbitWatcher/
 ├── config.py                    ← ALL constants (thresholds, paths, URLs)
-├── logger.py                    ← Centralized logging (writes to C:/OrbitWatchData/)
+├── logger.py                    ← Centralized logging
 ├── requirements.txt
-│
 ├── backend/
 │   ├── main.py                  ← FastAPI app entry, CORS, static files, scheduler start
 │   ├── database.py              ← SQLite init, WAL mode, 3 tables, 5 indexes
-│   ├── scheduler.py             ← APScheduler 6-hour pipeline + run_pipeline_timed()
-│   │
+│   ├── scheduler.py             ← APScheduler 6-hour pipeline
 │   ├── services/
 │   │   ├── tle_fetcher.py       ← CelesTrak fetch, parse, validate, store
 │   │   ├── propagator.py        ← SGP4 batch propagation, altitude filtering
 │   │   ├── conjunction.py       ← Altitude shell + k-d tree screening, risk scoring
-│   │   ├── conjunction_bruteforce.py  ← O(n²) oracle (RESEARCH ONLY, never in prod)
 │   │   └── optimizer.py         ← Delta-V maneuver computation
-│   │
 │   └── routes/
 │       ├── satellites.py        ← GET /api/v1/tles
 │       ├── conjunctions.py      ← GET /api/v1/conjunctions
 │       ├── analytics.py         ← GET /api/v1/analytics
 │       └── maneuvers.py         ← GET /api/v1/maneuvers
-│
 ├── frontend/
-│   ├── index.html               ← Single page app, script load order is critical
+│   ├── index.html               ← Single page app
 │   ├── css/style.css
 │   └── js/
-│       ├── api.js               ← window.location.origin base URL, 4 fetch functions
-│       ├── globe.js             ← Three.js scene, dark Earth, trails, rotation toggle
-│       ├── satellites.js        ← BufferGeometry, altitude colors, markHighRisk
-│       ├── inspector.js         ← Satellite detail panel, orbital params, flashSatellite→trail
-│       ├── alerts.js            ← Collision alert panel, alert→trail integration
-│       ├── conjunctions.js      ← Load conjunctions, updateConjunctionStats
+│       ├── globe.js             ← Three.js scene, dark Earth, trails
+│       ├── satellites.js        ← BufferGeometry, altitude colors
+│       ├── alerts.js            ← Collision alert panel
 │       ├── dashboard.js         ← Chart.js 4 charts
-│       ├── maneuver.js          ← Maneuver cards panel
-│       ├── search.js            ← Autocomplete search, RISK badge
-│       ├── router.js            ← View switching (Globe/Analytics/Maneuvers)
-│       ├── export.js            ← CSV and JSON download
+│       ├── search.js            ← Autocomplete search
 │       └── main.js              ← Init sequence, clock, animation loop
-│
-├── benchmark.py                 ← Scalability experiment (n=1k–10k, 5 repeats)
-├── generate_figures.py          ← 4 matplotlib paper figures
-├── benchmark_scalability.json   ← Raw experiment data
-├── benchmark_completeness.json  ← Raw experiment data
-├── pipeline_timing.json         ← Raw experiment data
-├── fig1_runtime_scaling.pdf/.png
-├── fig2_speedup.pdf/.png
-├── fig3_completeness.pdf/.png
-└── fig4_pipeline_breakdown.pdf/.png
-```
+
+---
+
+## Contributors
+
+- [ssr0231](https://github.com/ssr0231) — original author
+- [sarthmishra](https://github.com/sarthmishra) — contributor
+
 ---
 
 ## Built With
@@ -250,4 +243,3 @@ OrbitWatcher/
 Developed as a final year major project demonstrating real-world
 application of orbital mechanics, spatial algorithms, and full-stack
 engineering on live satellite data.
-
