@@ -40,6 +40,9 @@ async function init() {
   loop();
 
   setStatus(`Live — ${satRecords.length.toLocaleString()} satellites tracked.`);
+  const now = new Date();
+document.getElementById("stat-last-updated").textContent =
+  "Updated: " + now.toUTCString().slice(0, 25);
 }
 
 window.addEventListener("load", init);
