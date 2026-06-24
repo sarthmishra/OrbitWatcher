@@ -442,3 +442,85 @@ body {
   background: rgba(107,138,255,0.2);
   border-radius: 2px;
 }
+
+/* ============================================================
+   RESPONSIVE DESIGN — OrbitWatch
+   Breakpoints:
+     Tablet  : max-width 1024px
+     Mobile  : max-width 768px
+   ============================================================ */
+
+#hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: transparent;
+  border: 1px solid rgba(90,110,255,0.25);
+  border-radius: 6px;
+  padding: 7px 10px;
+  cursor: pointer;
+  z-index: 30;
+}
+#hamburger span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: #6b8aff;
+  border-radius: 2px;
+  transition: all 0.2s ease;
+}
+#mobile-nav-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 25;
+}
+#mobile-nav-drawer {
+  display: none;
+  position: fixed;
+  top: 0; right: 0;
+  width: 220px;
+  height: 100vh;
+  background: rgba(6,6,26,0.98);
+  border-left: 1px solid rgba(90,110,255,0.25);
+  backdrop-filter: blur(14px);
+  z-index: 30;
+  flex-direction: column;
+  padding: 70px 20px 24px;
+  gap: 10px;
+}
+#mobile-nav-drawer.open { display: flex; }
+#mobile-nav-overlay.open { display: block; }
+#mobile-nav-drawer .nav-btn { width: 100%; text-align: left; padding: 11px 16px; font-size: 12px; }
+
+@media (max-width: 1024px) {
+  #stats { gap: 14px; font-size: 10px; min-width: unset; }
+  #topbar { padding: 0 16px; }
+  #logo { font-size: 13px; min-width: 120px; letter-spacing: 2px; }
+  .dashboard-grid { gap: 14px; padding: 0 4px; }
+  #side-panel { width: 250px; }
+  #inspector { width: 280px; }
+}
+
+@media (max-width: 768px) {
+  #topbar { padding: 0 14px; height: 52px; flex-wrap: nowrap; position: fixed; }
+  #nav { display: none; }
+  #stats { display: none; }
+  #hamburger { display: flex; }
+  #logo { font-size: 12px; letter-spacing: 2px; min-width: unset; }
+  #globe-canvas { top: 52px; height: calc(100vh - 52px - 32px); }
+  #search-bar { top: 62px; left: 10px; right: 10px; width: auto; }
+  #side-panel { position: fixed; top: auto; bottom: 32px; left: 0; right: 0; width: 100%; max-height: 42vh; border-radius: 14px 14px 0 0; border: none; border-top: 1px solid rgba(90,110,255,0.25); z-index: 12; }
+  .view { top: 52px; bottom: 32px; padding: 16px 12px; }
+  .dashboard-grid { grid-template-columns: 1fr; gap: 12px; }
+  .chart-card { height: 280px; }
+  #maneuver-header-row { flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .maneuver-card { padding: 16px 14px; }
+  .maneuver-stats { flex-direction: column; gap: 6px; align-items: flex-start; }
+  .maneuver-deltav { font-size: 18px; }
+  #inspector { bottom: 32px; left: 0; right: 0; width: 100%; border-radius: 14px 14px 0 0; border: none; border-top: 1px solid rgba(107,138,255,0.35); }
+  #bottombar { padding: 0 12px; }
+  #status-msg { font-size: 9px; letter-spacing: 0.4px; }
+}

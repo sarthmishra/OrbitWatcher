@@ -20,9 +20,18 @@
       <span id="stat-conj">Conjunctions: —</span>
       <span id="stat-critical">Critical: —</span>
       <span id="stat-time">UTC: —</span>
-      <span id="stat-time">UTC: —</span>
-<span id="stat-last-updated">Updated: —</span>
+      <span id="stat-last-updated">Updated: —</span>
     </div>
+    <button id="hamburger" onclick="toggleMobileNav()" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div id="mobile-nav-overlay" onclick="closeMobileNav()"></div>
+  <div id="mobile-nav-drawer">
+    <button class="nav-btn active" id="mob-btn-globe"     onclick="showView('globe');     closeMobileNav()">Globe</button>
+    <button class="nav-btn"        id="mob-btn-dashboard" onclick="showView('dashboard'); closeMobileNav()">Analytics</button>
+    <button class="nav-btn"        id="mob-btn-maneuvers" onclick="showView('maneuvers'); closeMobileNav()">Maneuvers</button>
   </div>
 
   <canvas id="globe-canvas"></canvas>
@@ -96,6 +105,29 @@
   <script src="/static/js/search.js"></script>
   <script src="/static/js/router.js"></script>
   <script src="/static/js/main.js"></script>
+
+  <script>
+    function toggleMobileNav() {
+      document.getElementById('mobile-nav-drawer').classList.toggle('open');
+      document.getElementById('mobile-nav-overlay').classList.toggle('open');
+    }
+    function closeMobileNav() {
+      document.getElementById('mobile-nav-drawer').classList.remove('open');
+      document.getElementById('mobile-nav-overlay').classList.remove('open');
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof showView === 'function') {
+        const original = showView;
+        window.showView = function(view) {
+          original(view);
+          ['globe','dashboard','maneuvers'].forEach(v => {
+            const btn = document.getElementById('mob-btn-' + v);
+            if (btn) btn.classList.toggle('active', v === view);
+          });
+        };
+      }
+    });
+  </script>
 
 </body>
 </html>
