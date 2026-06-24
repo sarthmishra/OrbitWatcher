@@ -43,9 +43,14 @@
   </div>
 
   <div id="side-panel">
-    <div id="panel-title">Collision Alerts</div>
+    <div id="panel-drag-handle"><span></span></div>
+    <div id="panel-title">
+      Collision Alerts
+      <button id="panel-close-btn" onclick="toggleSidePanel()" aria-label="Close panel">✕</button>
+    </div>
     <div id="alert-list"></div>
   </div>
+  <button id="panel-open-btn" onclick="toggleSidePanel()">⚠ Alerts</button>
 
   <div id="dashboard-view" class="view hidden">
     <div class="dashboard-grid">
@@ -114,6 +119,12 @@
     function closeMobileNav() {
       document.getElementById('mobile-nav-drawer').classList.remove('open');
       document.getElementById('mobile-nav-overlay').classList.remove('open');
+    }
+    function toggleSidePanel() {
+      const panel = document.getElementById('side-panel');
+      const btn   = document.getElementById('panel-open-btn');
+      panel.classList.toggle('mobile-hidden');
+      btn.style.display = panel.classList.contains('mobile-hidden') ? 'block' : 'none';
     }
     document.addEventListener('DOMContentLoaded', () => {
       if (typeof showView === 'function') {

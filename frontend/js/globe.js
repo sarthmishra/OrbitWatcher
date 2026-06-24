@@ -146,6 +146,50 @@ function initMouseControls(canvas) {
     camera.position.z  = Math.max(1.3, Math.min(5.5, camera.position.z));
     e.preventDefault();
   }, { passive: false });
+
+  let lastTouch = null;
+  let lastPinchDist = null;
+
+  canvas.addEventListener("touchstart", e => {
+    e.preventDefault();
+    if (e.touches.length === 1) {
+      isDragging = true;
+      lastTouch  = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      autoRotate = false;
+    } else if (e.touches.length === 2) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      lastPinchDist = Math.hypot(dx, dy);
+    }
+  }, { passive: false });
+
+  canvas.addEventListener("touchmove", e => {
+    e.preventDefault();
+    if (e.touches.length === 1 && isDragging && lastTouch) {
+      const dx = e.touches[0].clientX - lastTouch.x;
+      const dy = e.touches[0].clientY - lastTouch.y;
+      earthGroup.rotation.y += dx * 0.005;
+      earthGroup.rotation.x += dy * 0.005;
+      earthGroup.rotation.x = Math.max(-Math.PI / 2.2, Math.min(Math.PI / 2.2, earthGroup.rotation.x));
+      lastTouch = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    } else if (e.touches.length === 2 && lastPinchDist !== null) {
+      const dx   = e.touches[0].clientX - e.touches[1].clientX;
+      const dy   = e.touches[0].clientY - e.touches[1].clientY;
+      const dist = Math.hypot(dx, dy);
+      camera.position.z -= (dist - lastPinchDist) * 0.008;
+      camera.position.z  = Math.max(1.3, Math.min(5.5, camera.position.z));
+      lastPinchDist = dist;
+    }
+  }, { passive: false });
+
+  canvas.addEventListener("touchend", e => {
+    e.preventDefault();
+    if (e.touches.length === 0) {
+      isDragging    = false;
+      lastTouch     = null;
+      lastPinchDist = null;
+    }
+  }, { passive: false });
 }
 
 // ── Internal helpers ───────────────────────────────────

@@ -524,3 +524,91 @@ body {
   #bottombar { padding: 0 12px; }
   #status-msg { font-size: 9px; letter-spacing: 0.4px; }
 }
+
+
+/* ============================================================
+   MOBILE FIXES — Phase 2
+   ============================================================ */
+
+#panel-drag-handle {
+  display: none;
+  justify-content: center;
+  padding: 8px 0 4px;
+}
+#panel-drag-handle span {
+  display: block;
+  width: 36px;
+  height: 4px;
+  background: rgba(107,138,255,0.3);
+  border-radius: 2px;
+}
+#panel-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#panel-close-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #5a6a9a;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 2px 6px;
+  line-height: 1;
+}
+#panel-close-btn:hover { color: #ff6666; }
+#panel-open-btn {
+  display: none;
+  position: fixed;
+  bottom: 44px;
+  right: 14px;
+  background: rgba(6,6,26,0.95);
+  border: 1px solid rgba(107,138,255,0.4);
+  color: #6b8aff;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 8px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  z-index: 13;
+  backdrop-filter: blur(10px);
+}
+
+@media (max-width: 768px) {
+  #panel-drag-handle { display: flex; }
+  #panel-close-btn   { display: block; }
+  .alert-item  { padding: 14px 12px; margin-bottom: 6px; }
+  .alert-name  { font-size: 12px; }
+  .alert-detail, .alert-risk { font-size: 11px; }
+  #search-results { max-height: 45vh; }
+  #inspector {
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    bottom: 32px;
+    border-radius: 14px 14px 0 0;
+    max-height: 55vh;
+    overflow-y: auto;
+  }
+  #inspector-close {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+  #side-panel.mobile-hidden {
+    transform: translateY(100%);
+    pointer-events: none;
+  }
+  #side-panel.mobile-hidden ~ #panel-open-btn {
+    display: block;
+  }
+  #side-panel {
+    transition: transform 0.3s ease;
+  }
+}
