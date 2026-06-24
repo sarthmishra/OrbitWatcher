@@ -123,8 +123,8 @@
     function toggleSidePanel() {
       const panel = document.getElementById('side-panel');
       const btn   = document.getElementById('panel-open-btn');
-      panel.classList.toggle('mobile-hidden');
-      btn.style.display = panel.classList.contains('mobile-hidden') ? 'block' : 'none';
+      const isHidden = panel.classList.toggle('mobile-hidden');
+      btn.style.display = isHidden ? 'block' : 'none';
     }
     document.addEventListener('DOMContentLoaded', () => {
       if (typeof showView === 'function') {

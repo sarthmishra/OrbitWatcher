@@ -612,3 +612,40 @@ body {
     transition: transform 0.3s ease;
   }
 }
+
+/* ============================================================
+   MOBILE FIXES — Phase 3
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+  /* Hide rotation button on mobile */
+  #btn-rotation { display: none; }
+
+  /* Globe canvas must receive touch events */
+  #globe-canvas {
+    z-index: 1;
+    touch-action: none;
+  }
+
+  /* Side panel: ensure it starts visible and has correct z-index */
+  #side-panel {
+    z-index: 12;
+    transform: translateY(0);
+  }
+
+  /* Panel open button always visible when panel hidden */
+  #panel-open-btn {
+    display: none;
+    z-index: 14;
+  }
+
+  #side-panel.mobile-hidden {
+    transform: translateY(100%) !important;
+    pointer-events: none;
+  }
+
+  #side-panel.mobile-hidden ~ #panel-open-btn {
+    display: block !important;
+  }
+}
