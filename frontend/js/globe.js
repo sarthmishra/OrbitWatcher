@@ -182,12 +182,23 @@ function initMouseControls(canvas) {
     }
   }, { passive: false });
 
+  let lastTapTime = 0;
+
   canvas.addEventListener("touchend", e => {
     e.preventDefault();
     if (e.touches.length === 0) {
       isDragging    = false;
       lastTouch     = null;
       lastPinchDist = null;
+
+      // Double tap to toggle auto-rotation
+      const now = Date.now();
+      if (now - lastTapTime < 300) {
+        autoRotate = !autoRotate;
+        const btn = document.getElementById("btn-rotation");
+        if (btn) btn.textContent = autoRotate ? "⏸ Rotation" : "▶ Rotation";
+      }
+      lastTapTime = now;
     }
   }, { passive: false });
 }
